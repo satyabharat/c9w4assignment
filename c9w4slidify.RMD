@@ -1,0 +1,55 @@
+---
+title: "C9W4Slidify"
+author: "SatyaBharat"
+date: "October 20, 2017"
+output: ioslides_presentation
+---
+
+## Introduction to problem statement
+
+The data set is a collection of work that is being performed to clients where the complexity of the applications are derived based on the application source code.This data set has the below colums
+
+- Vertical (which industry segment the client is from)
+- Country (which country the client has head quarters)
+- Maskname (dummy name to client)
+- FY (finalcial Year)
+- Quarter (in which quarter the analysis is performed)
+- Total LOC (Overall lines of code)
+- Effective LOC (Executable line of code excluding blank lines and comments)
+- Halstead , McCabe, McClure (complexity metrics)
+- Technical (derived technical complexty)
+- dead, redundant (% of code in applications)
+
+## Data set Information
+
+```{r cars, echo = TRUE, warning=FALSE, message=FALSE}
+inputd <- read.csv("prjInput.csv", header=TRUE)
+colnames(inputd)[1]<- "vertical"
+colnames(inputd)[6]<-"loc"
+colnames(inputd)[7]<-"effloc"
+
+names(inputd)
+head(inputd)
+```
+## Functionality
+
+This application provides users options to select the industry segment and country.
+With the two inputs from the overall data set the subset dataset is derived.
+
+Aggregated with loc~FY+Quarter 
+Plotter with the resulted information.
+
+```{r}
+     fltr1 <- subset(inputd, (inputd$vertical == "Insurance" & inputd$Country == "USA"))
+     
+     fltr1$loc = as.numeric(fltr1$loc)
+     
+     fyloc <- aggregate(loc~FY+Quarter, data=fltr1, FUN=sum)
+```
+
+## Slide with Plot
+
+```{r }
+plot(fyloc,fltr1$vertical)
+```
+
